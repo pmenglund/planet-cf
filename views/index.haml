@@ -1,0 +1,20 @@
+#header
+	%h1 Planet Cloud Foundry
+	%p
+	Blog feed aggregator for
+	%a{:href => "http://cloudfoundry.com/"} Cloud Foundry
+	related blogs
+
+- @entries.each do |entry|
+	#entry
+		%h3
+			%a{:href => entry.url}= entry.title
+			- if entry.author
+				by
+				= entry.author
+		%p= entry.published
+		%p
+			- if entry.content
+				= entry.content
+			- else
+				= entry.summary
