@@ -29,16 +29,26 @@ configure do
   DataMapper.setup(:default, options)
   DataMapper.finalize
 
-  # TODO ugly hack - move into a separate app
-  Thread.new do
-    while true
-      puts "pulling feeds..."
-      FEEDS.each do |feed|
-        FeedzirraRedis::Feed.fetch_and_parse(feed)
+  # TODO ugly hack - move into a separate app and run hourly using clockwork
+  index = 0
+  if app_env = ENV['VCAP_APPLICATION']
+    json = JSON.parse(app_env)
+    index = json['instance_index']
+  end
+
+  # only start the update thread on the first instance
+  if index == 0
+    Thread.new do
+      while true
+        puts "pulling feeds..."
+        FEEDS.each do |feed|
+          FeedzirraRedis::Feed.fetch_and_parse(feed)
+        end
+        sleep 600
       end
-      sleep 600
     end
   end
+
 end
 
 get '/' do
@@ -49,6 +59,10 @@ end
 get '/stylesheet.css' do
   headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :stylesheet
+end
+
+get '/about' do
+  haml :about
 end
 
 get '/feed' do

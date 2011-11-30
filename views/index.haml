@@ -1,9 +1,12 @@
 #header
 	%h1 Planet Cloud Foundry
 	%p
-	Blog feed aggregator for
-	%a{:href => "http://cloudfoundry.com/"} Cloud Foundry
-	related blogs
+		Blog feed aggregator for
+		%a{:href => "http://cloudfoundry.com/"} Cloud Foundry
+		related blogs - running on Cloud Foundry
+	%p
+		You can subscribe to the
+		%a{:href => "/feed"} RSS feed
 
 - @entries.each do |entry|
 	#entry
