@@ -41,8 +41,6 @@ configure do
   end
 end
 
-# TODO add feed URL
-
 get '/' do
   @entries = FeedzirraRedis::Entry.all(:order => [:published.desc])
   haml :index
@@ -51,4 +49,11 @@ end
 get '/stylesheet.css' do
   headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :stylesheet
+end
+
+get '/feed' do
+  # TODO caching
+  @entries = FeedzirraRedis::Entry.all(:order => [:published.desc])
+  content_type 'application/rss+xml'
+  haml :feed, :format => :xhtml, :escape_html => true, :layout => false
 end

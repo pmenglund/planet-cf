@@ -1,0 +1,13 @@
+!!! XML
+%rss{:version => "2.0", "xmlns:atom" => "http://www.w3.org/2005/Atom"}
+	%channel
+		%title Planet Cloud Foundry
+		%link http://planet.cloudfoundry.com
+		%description Blog aggregation for Cloud Foundry related blogs
+		<atom:link href="http://planet.cloudfoundry.com/feed" rel="self" type="application/rss+xml" />
+		- @entries.each do |entry|
+			%item
+				%title= entry.title
+				%link= entry.url
+				%description= entry.content
+				%pubDate= entry.published
